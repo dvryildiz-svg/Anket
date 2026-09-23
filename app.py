@@ -125,12 +125,16 @@ questions = {
 scores = {}
 with st.form("simulation_form"):
     q_index = 1
+    form_data = {"Ogrenci": "Ali Yigit"}
     for module_name, q_list in questions.items():
         st.subheader(module_name)
         scores[module_name] = []
         for q in q_list:
             val = st.slider(f"Soru {q_index}: {q}", 1, 5, 3)
             scores[module_name].append(val)
+            form_data[f"Soru_{q_index}"] = (
+                f"{val}/5"  # Her sorunun yanıtını ekle
+            )
             q_index += 1
 
     submitted = st.form_submit_button("Simülasyonu Tamamla ve Raporu Gör")
@@ -141,17 +145,15 @@ if submitted:
     mod3_avg = sum(scores["Modül 3: Küresel Vizyon ve Gelecek Projeksiyonu"]) / 5
     mod4_avg = sum(scores["Modül 4: Rasyonel Problem Çözme ve Adaptasyon"]) / 5
 
+    # Genel Skorları form verisine ekle
+    form_data["--- ÖZET SKORLAR ---"] = (
+        f"Duygusal Yük: {mod1_avg:.1f} | STEM Uyumu: {mod2_avg:.1f} | Küresel Vizyon: {mod3_avg:.1f} | Rasyonel Adaptasyon: {mod4_avg:.1f}"
+    )
+
     # Formspree üzerinden verileri e-postanıza gönder
     formspree_url = "https://formspree.io/f/mljdnlad"
-    data = {
-        "Ogrenci": "Ali Yigit",
-        "Duygusal_Yuk_Skoru": f"{mod1_avg:.1f} / 5.0",
-        "STEM_Uyumu_Skoru": f"{mod2_avg:.1f} / 5.0",
-        "Kuresel_Vizyon_Skoru": f"{mod3_avg:.1f} / 5.0",
-        "Rasyonel_Adaptasyon_Skoru": f"{mod4_avg:.1f} / 5.0",
-    }
     try:
-        requests.post(formspree_url, data=data)
+        requests.post(formspree_url, data=form_data)
     except:
         pass
 
