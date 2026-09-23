@@ -1,7 +1,7 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="Akademik ve Kariyer Simülasyonu",
+    page_title="Kariyer ve Vizyon Simülasyonu",
     page_icon="🎯",
     layout="centered",
 )
@@ -132,26 +132,49 @@ with st.form("simulation_form"):
             scores[module_name].append(val)
             q_index += 1
 
-    submitted = st.form_submit_button("Anketi Tamamla")
+    submitted = st.form_submit_button("Simülasyonu Tamamla ve Raporu Gör")
 
 if submitted:
-    st.success(
-        "Teşekkürler! Yanıtların başarıyla kaydedildi. Bu pencereyi"
-        " kapatabilirsin."
-    )
     st.session_state["scores"] = scores
     st.session_state["completed"] = True
 
+# Eğer anket tamamlandıysa, Ali Yiğit'in hemen görebileceği "Öğrenci Geri Bildirim Raporu" gösterilir
+if "completed" in st.session_state and st.session_state["completed"]:
+    st.markdown("---")
+    st.success(
+        "🚀 **Simülasyon Tamamlandı! İşte Senin Kariyer ve Vizyon Raporun:**"
+    )
+
+    sc = st.session_state["scores"]
+    mod2_avg = sum(sc["Modül 2: STEM ve Alan Uyumu"]) / 5
+    mod3_avg = sum(sc["Modül 3: Küresel Vizyon ve Gelecek Projeksiyonu"]) / 5
+
+    st.subheader("💡 Sana Özel Analitik Geri Bildirim")
+    st.markdown(
+        f"""
+- **STEM ve Zihinsel Altyapı Puanın ({mod2_avg}/5.0):** İTÜ'deki fizik çalışmaların, sayısal kapasiten ve analitik düşünce yapın, senin standart kalıpların çok ötesinde bir saf fen ve teknoloji potansiyeline sahip olduğunu gösteriyor.
+- **Küresel Vizyon ve Gelecek Projeksiyonun ({mod3_avg}/5.0):** Uluslararası hedeflerin, mühendislik/fizik alanındaki kariyer planların ve küresel üniversite vizyonun, enerjini doğru ekosistemde birleştirmen gerektiğine işaret ediyor.
+"""
+    )
+
+    st.subheader(
+        "🏛️ Bilim Tarihinden Bir Perspektif: Einstein ve Zürih Modeli"
+    )
+    st.markdown(
+        """
+> Genç Albert Einstein, katı otoriter lise sisteminden ayrılıp kendi potansiyelini açığa çıkarabileceği özgür ve yenilikçi Zürih Politeknik ekolüne geçtiğinde asıl çığır açan keşiflerinin zeminini oluşturmuştur. **Büyük zihinler, enerjilerini yanlış ortamlardaki bürokratik sürtüşmelere değil, evrenin yasalarını ve büyük projeleri çözmeye harcarlar.** Senin de yapman gereken; İTÜ'deki çalışmalarını ve teknoloji tutğunu en üst düzey laboratuvar altyapısıyla buluşturmaktır.
+"""
+    )
+
 # --- YÖNETİCİ (EBEVEYN) GİZLİ PANELİ ---
 st.markdown("---")
-with st.expander("🔒 Ebeveyn / Yönetici Girişi (Detaylı Analiz Raporu İçin Tıkla)"):
+with st.expander("🔒 Ebeveyn / Yönetici Girişi (Detaylı Gizli Analiz Paneli)"):
     admin_password = st.text_input("Yönetici Şifresini Girin:", type="password")
 
     if admin_password == "1453":
         if "completed" in st.session_state and st.session_state["completed"]:
             st.subheader(
-                "📊 Profesyonel Psikometrik Analiz ve Stratejik Yönlendirme"
-                " Raporu"
+                "📊 Ebeveyn İçin Gizli Psikometrik ve Stratejik Analiz"
             )
 
             sc = st.session_state["scores"]
@@ -171,36 +194,18 @@ with st.expander("🔒 Ebeveyn / Yönetici Girişi (Detaylı Analiz Raporu İçi
             )
 
             st.markdown("---")
-            st.subheader("💡 Detaylı Analiz ve Psikolojik Değerlendirme")
-            st.markdown(
-                f"""
-- **Duygusal Yük ve Aidiyet Durumu ({mod1_avg}/5.0):** Eğer bu skor yüksekse, çocuk için mesele eğitim kalitesinden ziyade **"uğranılan haksızlığa karşı gurur yapma ve sahadan kaçmama"** psikolojisidir.
-- **STEM ve Zihinsel Altyapı ({mod2_avg}/5.0):** İTÜ'deki fizik çalışmaları ve analitik zekası, onun saf fen kulvarında ne kadar yüksek bir potansiyele sahip olduğunu kanıtlıyor.
-- **Stratejik Uyum:** Çocuğun rasyonel akıl süzgeci ile duygusal direnci arasındaki denge bu verilere göre yönetilmelidir.
-"""
-            )
-
-            st.subheader("🏛️ Tarihsel ve Bilimsel Analoji (Rol Model Örneği)")
-            st.markdown(
-                """
-> **Max Planck ve Genç Albert Einstein Örneği:** 
-> Bilim tarihinin en büyük fizikçilerinden Max Planck, gençlik yıllarında klasik akademik çevrelerin ve eski ekollerin baskıcı, şekilsel yapısına takılmak yerine doğrudan laboratuvarlara ve saf fizik denklemlerine odaklanmıştır. Albert Einstein da lisedeki katı otoriter ve ezberci sistemle çatıştığında, o ortamda kalıp savaşmak yerine potansiyrini açığa çıkarabileceği özgür ve yenilikçi Zürih Politeknik ekolüne geçiş yapmış ve çığır açan keşiflerini bu hamleden sonra üretmiştir. **Büyük bilim insanları, enerjilerini yanlış ortamlardaki adalet savaşlarına değil, evrenin yasalarını çözmeye harcarlar.**
-"""
-            )
-
             st.subheader("🚀 Ebeveynler İçin Stratejik Yönlendirme Önerileri")
             st.markdown(
                 """
-1. **Duygusal Tepkiyi Mantığa Çevirin:** Ona asla *"Orası kötü, burası iyi"* demeyin. Bunun yerine verileri göstererek *"Senin gibi bir fizik araştırmacısının yeri, bürokratik krizlerle uğraşılan bir yer değil; Ar-Ge laboratuvarlarıdır"* mesajını verin.
-2. **Gurur Meselesini Stratejik Hamleye Dönüştürün:** Eski okula dönme isteğini "orayı alt etme" arzusu olarak görüyorsa; gerçek üstünlüğün oraya dönmek değil, FenTek ve Amerika vizyonuyla çok daha büyük bir kariyer inşa ederek kendi yolunu çizmek olduğunu vurgulayın.
-3. **İTÜ ve Projeleri Kaldıraç Yapın:** İTÜ'deki akademisyenle yaptığı çalışmaları ve ablasının Amerika deneyimini merkez üssü haline getirin; konuşmalarınızın odağına eski okuldaki haksızlığı değil, gelecekteki laboratuvar başarılarını koyun.
+1. **Duygusal Tepkiyi Mantığa Çevirin:** Ona asla *"Orası kötü, burası iyi"* demeyin. Raporun da gösterdiği gibi *"Senin gibi bir fizik araştırmacısının yeri, bürokratik krizlerle uğraşılan bir yer değil; Ar-Ge laboratuvarlarıdır"* argümanını kullanın.
+2. **Gurur Meselesini Stratejik Hamleye Dönüştürün:** Eski okula dönme isteğini "orayı alt etme" arzusu olarak görüyorsa; gerçek üstünlüğün orada kalmak değil, FenTek ve Amerika vizyonuyla çok daha büyük bir kariyer inşa etmek olduğunu vurgulayın.
+3. **İTÜ ve Projeleri Kaldıraç Yapın:** İTÜ'deki akademisyenle yaptığı çalışmaları ve ablasının Amerika deneyimini merkez üssü haline getirin.
 """
             )
         else:
             st.info(
                 "Henüz Ali Yiğit tarafından tamamlanmış bir anket verisi"
-                " bulunmuyor. (Anketi tamamlayıp butona bastıktan sonra"
-                " buradaki şifreyi girin)."
+                " bulunmuyor."
             )
     elif admin_password != "":
         st.error("Hatalı şifre!")
