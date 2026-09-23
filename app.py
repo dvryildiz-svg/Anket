@@ -1,3 +1,4 @@
+import requests
 import streamlit as st
 
 st.set_page_config(
@@ -135,10 +136,29 @@ with st.form("simulation_form"):
     submitted = st.form_submit_button("Simülasyonu Tamamla ve Raporu Gör")
 
 if submitted:
+    mod1_avg = sum(scores["Modül 1: Duygusal Yük ve Tepkisel Bağlanma"]) / 5
+    mod2_avg = sum(scores["Modül 2: STEM ve Alan Uyumu"]) / 5
+    mod3_avg = sum(scores["Modül 3: Küresel Vizyon ve Gelecek Projeksiyonu"]) / 5
+    mod4_avg = sum(scores["Modül 4: Rasyonel Problem Çözme ve Adaptasyon"]) / 5
+
+    # Formspree üzerinden verileri e-postanıza gönder
+    formspree_url = "https://formspree.io/f/mljdnlad"
+    data = {
+        "Ogrenci": "Ali Yigit",
+        "Duygusal_Yuk_Skoru": f"{mod1_avg:.1f} / 5.0",
+        "STEM_Uyumu_Skoru": f"{mod2_avg:.1f} / 5.0",
+        "Kuresel_Vizyon_Skoru": f"{mod3_avg:.1f} / 5.0",
+        "Rasyonel_Adaptasyon_Skoru": f"{mod4_avg:.1f} / 5.0",
+    }
+    try:
+        requests.post(formspree_url, data=data)
+    except:
+        pass
+
     st.session_state["scores"] = scores
     st.session_state["completed"] = True
 
-# Eğer anket tamamlandıysa, Ali Yiğit'in hemen görebileceği "Öğrenci Geri Bildirim Raporu" gösterilir
+# Ali Yiğit'in göreceği vizyon raporu
 if "completed" in st.session_state and st.session_state["completed"]:
     st.markdown("---")
     st.success(
