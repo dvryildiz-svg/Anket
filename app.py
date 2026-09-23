@@ -135,24 +135,24 @@ with st.form("simulation_form"):
     submitted = st.form_submit_button("Anketi Tamamla")
 
 if submitted:
-    # Ali Yiğit'e sadece nötr ve profesyonel bir teşekkür mesajı gösterilir, skorlar gizlenir.
     st.success(
         "Teşekkürler! Yanıtların başarıyla kaydedildi. Bu pencereyi"
         " kapatabilirsin."
     )
-
-    # Oturumda verileri sakla
     st.session_state["scores"] = scores
     st.session_state["completed"] = True
 
 # --- YÖNETİCİ (EBEVEYN) GİZLİ PANELİ ---
 st.markdown("---")
-with st.expander("🔒 Ebeveyn / Yönetici Girişi (Analiz Raporu İçin Tıkla)"):
+with st.expander("🔒 Ebeveyn / Yönetici Girişi (Detaylı Analiz Raporu İçin Tıkla)"):
     admin_password = st.text_input("Yönetici Şifresini Girin:", type="password")
 
-    if admin_password == "1453":  # Buradaki şifreyi kendinize göre değiştirebilirsiniz
+    if admin_password == "1453":
         if "completed" in st.session_state and st.session_state["completed"]:
-            st.subheader("📊 Gizli Analiz ve Değerlendirme Raporu")
+            st.subheader(
+                "📊 Profesyonel Psikometrik Analiz ve Stratejik Yönlendirme"
+                " Raporu"
+            )
 
             sc = st.session_state["scores"]
             mod1_avg = sum(sc["Modül 1: Duygusal Yük ve Tepkisel Bağlanma"]) / 5
@@ -171,33 +171,36 @@ with st.expander("🔒 Ebeveyn / Yönetici Girişi (Analiz Raporu İçin Tıkla)
             )
 
             st.markdown("---")
-            if mod1_avg > 3.5 and mod4_avg < 3.0:
-                st.warning(
-                    "**Yönetici Notu:** Ali Yiğit'in skorları, kararda mantıksal"
-                    " hedeflerden ziyade haksızlığa uğramış olmanın yarattığı"
-                    " gurur ve 'pes etmeme' dürtüsünün baskın olduğunu"
-                    " gösteriyor. Yaklaşımınızda ona eski okulunun bir"
-                    " 'ödül/aidiyet' değil, potansiyelini kısıtlayan bir"
-                    " kısıır döngü olduğunu hissettirmeniz gerekebilir."
-                )
-            elif mod2_avg >= 4.0 and mod3_avg >= 4.0:
-                st.info(
-                    "**Yönetici Notu:** Zihinsel altyapısı ve STEM uyumu çok"
-                    " yüksek. Aklı zaten FenTek ve küresel vizyonu onaylıyor."
-                    " Duygusal direnci kırmak için İTÜ'deki projelerini ve"
-                    " Amerika hedeflerini ön plana alarak rasyonel bir konuşma"
-                    " yapabilirsiniz."
-                )
-            else:
-                st.success(
-                    "**Yönetici Notu:** Skorlar dengeli bir geçişe hazır"
-                    " olduğunu gösteriyor. Doğru bir yönlendirmeyle FenTek"
-                    " geçişini bir 'üst lige çıkış' olarak kabullenecektir."
-                )
+            st.subheader("💡 Detaylı Analiz ve Psikolojik Değerlendirme")
+            st.markdown(
+                f"""
+- **Duygusal Yük ve Aidiyet Durumu ({mod1_avg}/5.0):** Eğer bu skor yüksekse, çocuk için mesele eğitim kalitesinden ziyade **"uğranılan haksızlığa karşı gurur yapma ve sahadan kaçmama"** psikolojisidir.
+- **STEM ve Zihinsel Altyapı ({mod2_avg}/5.0):** İTÜ'deki fizik çalışmaları ve analitik zekası, onun saf fen kulvarında ne kadar yüksek bir potansiyele sahip olduğunu kanıtlıyor.
+- **Stratejik Uyum:** Çocuğun rasyonel akıl süzgeci ile duygusal direnci arasındaki denge bu verilere göre yönetilmelidir.
+"""
+            )
+
+            st.subheader("🏛️ Tarihsel ve Bilimsel Analoji (Rol Model Örneği)")
+            st.markdown(
+                """
+> **Max Planck ve Genç Albert Einstein Örneği:** 
+> Bilim tarihinin en büyük fizikçilerinden Max Planck, gençlik yıllarında klasik akademik çevrelerin ve eski ekollerin baskıcı, şekilsel yapısına takılmak yerine doğrudan laboratuvarlara ve saf fizik denklemlerine odaklanmıştır. Albert Einstein da lisedeki katı otoriter ve ezberci sistemle çatıştığında, o ortamda kalıp savaşmak yerine potansiyrini açığa çıkarabileceği özgür ve yenilikçi Zürih Politeknik ekolüne geçiş yapmış ve çığır açan keşiflerini bu hamleden sonra üretmiştir. **Büyük bilim insanları, enerjilerini yanlış ortamlardaki adalet savaşlarına değil, evrenin yasalarını çözmeye harcarlar.**
+"""
+            )
+
+            st.subheader("🚀 Ebeveynler İçin Stratejik Yönlendirme Önerileri")
+            st.markdown(
+                """
+1. **Duygusal Tepkiyi Mantığa Çevirin:** Ona asla *"Orası kötü, burası iyi"* demeyin. Bunun yerine verileri göstererek *"Senin gibi bir fizik araştırmacısının yeri, bürokratik krizlerle uğraşılan bir yer değil; Ar-Ge laboratuvarlarıdır"* mesajını verin.
+2. **Gurur Meselesini Stratejik Hamleye Dönüştürün:** Eski okula dönme isteğini "orayı alt etme" arzusu olarak görüyorsa; gerçek üstünlüğün oraya dönmek değil, FenTek ve Amerika vizyonuyla çok daha büyük bir kariyer inşa ederek kendi yolunu çizmek olduğunu vurgulayın.
+3. **İTÜ ve Projeleri Kaldıraç Yapın:** İTÜ'deki akademisyenle yaptığı çalışmaları ve ablasının Amerika deneyimini merkez üssü haline getirin; konuşmalarınızın odağına eski okuldaki haksızlığı değil, gelecekteki laboratuvar başarılarını koyun.
+"""
+            )
         else:
             st.info(
                 "Henüz Ali Yiğit tarafından tamamlanmış bir anket verisi"
-                " bulunmuyor."
+                " bulunmuyor. (Anketi tamamlayıp butona bastıktan sonra"
+                " buradaki şifreyi girin)."
             )
     elif admin_password != "":
         st.error("Hatalı şifre!")
